@@ -1,0 +1,19 @@
+# build directories
+bin/
+bin-int/
+
+# assets
+CS7GV5 - Assignment 2/assets/
+
+# third party
+CS7GV5 - Assignment 2/external/
+
+# VS files
+.vs/
+*.sln
+*.vcxproj
+*.filters
+*.user
+
+# other
+*.ini
