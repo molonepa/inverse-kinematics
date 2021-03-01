@@ -34,14 +34,22 @@ void FabrikSolver::ReachForwards(glm::vec3 target) {
 	m_Chain.back().SetPosition(target);
 	for (size_t i = m_Chain.size() - 2; i > 0; i--) {
 		float lambda = m_Lengths[i] / euclideanDistance(m_Chain[i].GetPosition(), m_Chain[i + 1].GetPosition());
-		m_Chain[i].SetPosition(lerp(m_Chain[i + 1].GetPosition(), m_Chain[i].GetPosition(), lambda));
+		glm::vec3 newPosition = lerp(m_Chain[i + 1].GetPosition(), m_Chain[i].GetPosition(), lambda);
+		if (newPosition.y < 0) {
+			newPosition.y = 0;
+		}
+		m_Chain[i].SetPosition(newPosition);
 	}
 }
 
 void FabrikSolver::ReachBackwards(glm::vec3 target) {
 	for (size_t i = 0; i < m_Chain.size() - 1; i++) {
 		float lambda = m_Lengths[i] / euclideanDistance(m_Chain[i].GetPosition(), m_Chain[i + 1].GetPosition());
-		m_Chain[i + 1].SetPosition(lerp(m_Chain[i].GetPosition(), m_Chain[i + 1].GetPosition(), lambda));
+		glm::vec3 newPosition = lerp(m_Chain[i].GetPosition(), m_Chain[i + 1].GetPosition(), lambda);
+		if (newPosition.y < 0) {
+			newPosition.y = 0;
+		}
+		m_Chain[i + 1].SetPosition(newPosition);
 	}
 }
 
@@ -50,7 +58,11 @@ std::vector<Segment> FabrikSolver::Solve(glm::vec3 target) {
 	if (euclideanDistance(m_Chain.front().GetPosition(), target) >= m_TotalLength) {
 		for (size_t i = 0; i < m_Chain.size() - 1; i++) {
 			float lambda = m_Lengths[i] / euclideanDistance(m_Chain[i].GetPosition(), target);
-			m_Chain[i + 1].SetPosition(lerp(m_Chain[i].GetPosition(), target, lambda));
+			glm::vec3 newPosition = lerp(m_Chain[i].GetPosition(), target, lambda);
+			if (newPosition.y < 0) {
+				newPosition.y = 0;
+			}
+			m_Chain[i + 1].SetPosition(newPosition);
 		}
 	}
 	// if target is within reach

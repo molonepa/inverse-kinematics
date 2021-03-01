@@ -11,6 +11,9 @@ public:
 	void ReachBackwards(glm::vec3 target);
 	std::vector<Segment> Solve(glm::vec3 target);
 
+	inline std::vector<float> GetLengths() { return m_Lengths; }
+	inline void SetLengths(std::vector<float> lengths) { m_Lengths = lengths; }
+
 private:
 	std::vector<Segment> m_Chain;
 	std::vector<float> m_Lengths;
