@@ -12,7 +12,7 @@
 #include "Mesh.h."
 #include "Shader.h"
 #include "Texture.h"
-#include "Segment.h"
+#include "Joint.h"
 #include "FabrikSolver.h"
 
 int main(int argc, char* args[]) {
@@ -31,16 +31,16 @@ int main(int argc, char* args[]) {
 
 	Texture gridTexture("assets/test_texture.jpg");
 
-	Transform targetTransform(glm::vec3(0.0f, 5.5f, 0.0f), glm::vec3(0.0f), glm::vec3(0.1f));
+	Transform targetTransform(glm::vec3(0.0f, 5.0f, 0.0f), glm::vec3(0.0f), glm::vec3(0.1f));
 	Transform groundTransform;
 
 	Shader shader("src/shaders/blinn-phong");
 	Shader textureShader("src/shaders/blinn-phong-textured");
 
-	std::vector<Segment> chain;
+	std::vector<Joint> chain;
 	std::vector<float> lengths;
-	for (int i = 0; i < 10; i++) {
-		chain.push_back(Segment(glm::vec3(0.0f, (float)0.25f*i, 0.0f)));
+	for (int i = 0; i < 8; i++) {
+		chain.push_back(Joint(glm::vec3(0.0f, (float)0.5f*i, 0.0f)));
 	}
 	FabrikSolver solver(chain);
 
@@ -117,7 +117,7 @@ int main(int argc, char* args[]) {
 			ImGui::DragFloat3("Target position (X Y Z)", (float*)&P, 0.01f, -50.0f, 50.0f);
 			//if (ImGui::Button("Add segment")) {
 			//	glm::vec3 p = chain.back().GetPosition();
-			//	chain.push_back(Segment(p));
+			//	chain.push_back(Joint(p));
 			//	lengths.push_back(0.0f);
 			//}
 			//ImGui::SameLine();
@@ -126,7 +126,7 @@ int main(int argc, char* args[]) {
 			//	lengths.pop_back();
 			//}
 			for (size_t i = 0; i < lengths.size(); i++) {
-				std::string label = "Segment " + std::to_string(i + 1) + " length";
+				std::string label = "Joint " + std::to_string(i + 1) + " length";
 				float l = lengths[i];
 				ImGui::SliderFloat(label.c_str(), &l, 0.1f, 10.0f);
 				lengths[i] = l;
